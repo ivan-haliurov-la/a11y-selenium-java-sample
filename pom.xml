@@ -40,9 +40,9 @@
         <dependency>
             <groupId>org.userway</groupId>
             <artifactId>a11y-selenium-java</artifactId>
-            <version>0.0.14</version>
+            <version>0.0.15</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/a11y-selenium-java-0.0.14.jar</systemPath>
+            <systemPath>${project.basedir}/lib/a11y-selenium-java-0.0.15.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

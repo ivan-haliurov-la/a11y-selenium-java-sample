@@ -43,7 +43,7 @@ public class ManualScanTest {
     @Test
     @DisplayName("Should scan page and save Level CI scope report")
     void shouldScanPageAndSaveReport() {
-        driver.get("https://www.google.com");
+        driver.get("https://www.w3.org/WAI/standards-guidelines/wcag/");
 
         var analysisConfig = AnalysisConfig.builder()
                 .level(AnalysisLevel.AAA)

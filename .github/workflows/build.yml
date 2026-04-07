@@ -45,6 +45,7 @@ jobs:
           mvn clean test
       - name: Level CI Accessibility Analysis
         uses: levelaccess/level-ci@dev
+        with:
+          config_path: './level-ci/level-ci.config.ts'
         env:
           LEVEL_CI_TOKEN: ${{ secrets.LEVEL_CI_TOKEN }}
-          config_path: './level-ci/level-ci.config.ts'

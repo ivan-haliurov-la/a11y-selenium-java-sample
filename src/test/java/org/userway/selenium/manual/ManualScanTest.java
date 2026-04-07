@@ -19,7 +19,7 @@ public class ManualScanTest {
 
     private static WebDriver driver;
 
-    private static final String REPORTS_PATH = "." + File.separator + "ca11y" + File.separator + "uw-a11y-reports";
+    private static final String REPORTS_PATH = "." + File.separator + "level-ci" + File.separator + "level-ci-reports";
 
     @BeforeAll
     public static void setup() {

@@ -25,7 +25,7 @@ public class BGRTestSuiteRunner {
                         .analysisConfiguration(
                                 AnalysisConfig.builder()
                                         .includeRules(Set.of(Rule.SELECT_NAME))
-                                        .reportPath("./ca11y/uw-a11y-reports")
+                                        .reportPath("./level-ci/level-ci-reports")
                                         .build()
                         )
                         .saveReport(true)

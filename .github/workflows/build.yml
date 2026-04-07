@@ -47,4 +47,4 @@ jobs:
         uses: levelaccess/level-ci@dev
         env:
           LEVEL_CI_TOKEN: ${{ secrets.LEVEL_CI_TOKEN }}
-          config_path: './ca11y/level-ci.config.ts'
+          config_path: './level-ci/level-ci.config.ts'

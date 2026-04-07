@@ -66,7 +66,7 @@ Use a **Level CI** proxy `WebDriver` from the background runner API:
 
 ```java
 var myDriver = new ChromeDriver(); // or FirefoxDriver, SafariDriver, etc.
-
+//rename
 var bgRunner = UserWayBackgroundRunner.getInstance();
 
 myDriver = bgRunner.watchDriver(myDriver, "BGRInlineUseCase-test_1");

@@ -19,11 +19,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install npm packages
         run: |
-          cd ./ca11y
+          cd ./level-ci
           npm install
           nohup npm run dev > output.log 2>&1 &
           sleep 5
           cd ..
+        env:
+          CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
       - name: Install Java 11
         run: |
           sudo apt-get update
@@ -36,8 +38,8 @@ jobs:
       - name: Run Java Selenium Tests
         run: |
           mvn clean test
-      - name: UserWay Accessibility Analysis
-        uses: UserWayOrg/cicd-action@qa
-        with:
-          token: ${{ secrets.USERWAY_TOKEN }}
-          config_path: './ca11y/userway.config.ts'
+      - name: Level CI Accessibility Analysis
+        uses: levelaccess/level-ci@dev
+        env:
+          LEVEL_CI_TOKEN: ${{ secrets.LEVEL_CI_TOKEN }}
+          config_path: './ca11y/level-ci.config.ts'

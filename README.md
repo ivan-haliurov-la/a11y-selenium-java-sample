@@ -1,10 +1,10 @@
-# UserWay Java Selenium accessibility testing example
+# LevelCI Java Selenium accessibility testing example
 
-This is a sample project which shows use cases of UserWay's 
+This is a sample project which shows use cases of LevelCI's 
 Java Selenium Accessibility testing integration. There are two ways 
 of using the integration - manual and background runner mode.
 
-To use UserWay Selenium testing solution you should first of all
+To use LevelCI Selenium testing solution you should first of all
 install all the required dependencies:
 
 ```xml
@@ -58,7 +58,7 @@ mvn clean test
 ```
 
 2. Background Runner mode 
-In UserWay Background Runner mode you use our proxy `WebDriver` instance
+In LevelCI Background Runner mode you use our proxy `WebDriver` instance
 that you can acquire by executing the following code:
 
 ```java
@@ -68,12 +68,12 @@ var myDriver = new ChromeDriver(); // Can also be FirefoxDriver and SafariDriver
 // Get global UserWayBackgroundRunner instance
 var bgRunner = UserWayBackgroundRunner.getInstance();
 
-// Reassign your driver variable with UserWay proxy by calling watchDriver
+// Reassign your driver variable with LevelCI proxy by calling watchDriver
 myDriver = bgRunner.watchDriver(driver, "BGRInlineUseCase-test_1"); // Second argument is optional and affects only log messages
 ```
 
 Now the proxy instance of `WebDriver` can be used in your tests like 
-any other `WebDriver` but it will implicitly execute UserWay analysis
+any other `WebDriver` but it will implicitly execute LevelCI analysis
 each time you change state of tested page by, for example, calling `myDriver.get('...')` method.
 
 Background Runner should be configured before all tests that use it and 
@@ -100,7 +100,7 @@ want to be included in this test suite, e.g. `@SelectPackages("org.userway.selen
 
 In this class you can add two methods annotated with `@BeforeSuite` and `@AfterSutie`
 that will be executed before and after the test suite respectively.
-- In `@BeforeSuite` method you should get global instance of UserWay Background Runner
+- In `@BeforeSuite` method you should get global instance of LevelCI Background Runner
 and set global audit configuration that will be used for each background scan.
 After this you must enable monitoring by calling `bgRunner.enableBackgroundRunner()`.
 - In `@AfterSuite` method you should just disable background runner by calling 

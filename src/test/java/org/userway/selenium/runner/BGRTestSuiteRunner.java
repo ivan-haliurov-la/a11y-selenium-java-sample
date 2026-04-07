@@ -25,11 +25,10 @@ public class BGRTestSuiteRunner {
                         .analysisConfiguration(
                                 AnalysisConfig.builder()
                                         .includeRules(Set.of(Rule.SELECT_NAME))
+                                        .reportPath("./ca11y/uw-a11y-reports")
                                         .build()
                         )
-                        .elementScreenshots(false)
                         .saveReport(true)
-                        .reportPath("./ca11y/uw-a11y-reports")
                         .build()
         );
         backgroundRunner.enableBackgroundRunner();

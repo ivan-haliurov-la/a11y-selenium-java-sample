@@ -1,131 +1,100 @@
-# LevelCI Java Selenium accessibility testing example
+# Level CI — Java Selenium sample
 
-This is a sample project which shows use cases of LevelCI's 
-Java Selenium Accessibility testing integration. There are two ways 
-of using the integration - manual and background runner mode.
+Sample project for **Level CI** accessibility analysis with Selenium. Two modes: **manual** scans and **background runner** (proxied `WebDriver`).
 
-To use LevelCI Selenium testing solution you should first of all
-install all the required dependencies:
+## Adapter JAR (vendored)
 
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-java</artifactId>
-        <version>0.0.10</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.userway</groupId>
-        <artifactId>a11y-selenium-java</artifactId>
-        <version>${userway.version}</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <!-- You can use any other Slf4j provider you like -->
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>${logback.version}</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
+The Level CI Java adapter **`a11y-selenium-java`** is checked in under **`lib/`** (currently **`lib/a11y-selenium-java-0.0.14.jar`**). The sample **`pom.xml`** wires it with **`system`** scope and **`systemPath`**, and declares its runtime dependencies explicitly (Selenium, Jackson, Commons IO, SLF4J) so the test classpath matches what the adapter needs.
+
+**Selenium** is pinned to **4.14.1** to align with that JAR.
+
+To refresh the JAR after building the library from source (from your `web-accessibility-java-selenium` checkout):
+
+```bash
+mvn -q package -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+cp target/a11y-selenium-java-0.0.14.jar /path/to/a11y-selenium-java-sample/lib/
 ```
 
-1. Manual mode
-To run tests in manual mode you should prepare analysis configuration
-and execute analysis with it. You can find example of manual run
-under the package `org.userway.selenium.manual`.
+If the library version changes, rename the file under **`lib/`** and update **`systemPath`** (and dependency **`version`**) in **`pom.xml`**, and align the explicit dependency versions with the library’s **`pom.xml`**.
 
-To run only manual mode tests you should go to pom.xml and configure 
-Maven Surefire plugin to exclude Background Runner tests in 
-package `org.userway.selenium.runner`:
+The Maven coordinates for the adapter remain **`org.userway:a11y-selenium-java`** (published groupId). Java types live under **`org.userway.selenium.*`** in that JAR.
+
+---
+
+## Dependencies (snippet)
+
+```xml
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-java</artifactId>
+    <version>4.14.1</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.userway</groupId>
+    <artifactId>a11y-selenium-java</artifactId>
+    <version>0.0.14</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/lib/a11y-selenium-java-0.0.14.jar</systemPath>
+</dependency>
+<!-- plus jackson-databind, commons-io, slf4j-api, selenium-chrome-driver — see pom.xml -->
+```
+
+## 1. Manual mode
+
+Prepare analysis configuration and run the scan. Example: package **`org.userway.selenium.manual`** (paths match the JAR).
+
+Configure Surefire to **exclude** background-runner tests under **`org.userway.selenium.runner`**:
 
 ```xml
 <configuration>
     <excludes>
       <exclude>**/org/userway/selenium/runner/*.java</exclude>
     </excludes>
-<!--    It should be commented-->
-<!--    <includes>-->
-<!--        <include>**/BGRTestSuiteRunner.java</include>-->
-<!--    </includes>-->
 </configuration>
 ```
 
-And then you can run Manual-mode tests only:
+Run manual tests only:
+
 ```shell
 mvn clean test
 ```
 
-2. Background Runner mode 
-In LevelCI Background Runner mode you use our proxy `WebDriver` instance
-that you can acquire by executing the following code:
+## 2. Background runner mode
+
+Use a **Level CI** proxy `WebDriver` from the background runner API:
 
 ```java
-// Define your WebDriver instance
-var myDriver = new ChromeDriver(); // Can also be FirefoxDriver and SafariDriver
+var myDriver = new ChromeDriver(); // or FirefoxDriver, SafariDriver, etc.
 
-// Get global UserWayBackgroundRunner instance
 var bgRunner = UserWayBackgroundRunner.getInstance();
 
-// Reassign your driver variable with LevelCI proxy by calling watchDriver
-myDriver = bgRunner.watchDriver(driver, "BGRInlineUseCase-test_1"); // Second argument is optional and affects only log messages
+myDriver = bgRunner.watchDriver(myDriver, "BGRInlineUseCase-test_1");
 ```
 
-Now the proxy instance of `WebDriver` can be used in your tests like 
-any other `WebDriver` but it will implicitly execute LevelCI analysis
-each time you change state of tested page by, for example, calling `myDriver.get('...')` method.
+The proxy runs Level CI analysis when the page changes (e.g. after `get(...)`).
 
-Background Runner should be configured before all tests that use it and 
-also should be closed after all these tests completed. If you want to use
-background runner in many test-classes, we recommend you use JUnit Suite library
-to create test suites. For this you should just add the following dependency in
-your pom.xml file:
+Configure the runner **before** tests and tear it down **after** (often with a JUnit **`@Suite`**). Add **`junit-platform-suite`** if you use suites.
 
-```xml
-<dependencies>
-    <dependency>
-        <groupId>org.junit.platform</groupId>
-        <artifactId>junit-platform-suite</artifactId>
-        <version>${junit.suite.version}</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
-```
+Example suite selection: **`@SelectPackages("org.userway.selenium.runner")`**.
 
-Now you can create a package and add a class annotated with `@Suite` which
-defines this class as a test suite entry point. You should also add 
-`@SelectPackages` or/and `@SelectClasses` annotation to define test classes you 
-want to be included in this test suite, e.g. `@SelectPackages("org.userway.selenium.runner")`
+- **`@BeforeSuite`**: `UserWayBackgroundRunner.getInstance()`, set global audit config, `enableBackgroundRunner()`.
+- **`@AfterSuite`**: `disableBackgroundRunner()`.
 
-In this class you can add two methods annotated with `@BeforeSuite` and `@AfterSutie`
-that will be executed before and after the test suite respectively.
-- In `@BeforeSuite` method you should get global instance of LevelCI Background Runner
-and set global audit configuration that will be used for each background scan.
-After this you must enable monitoring by calling `bgRunner.enableBackgroundRunner()`.
-- In `@AfterSuite` method you should just disable background runner by calling 
-`bgRunner.disableBackgroundRunner()`.
-
-To run only background runner mode tests you should go to pom.xml and configure
-Maven Surefire plugin to include only Background Runner tests by implicitly
-specify that only class annotated with `@Suite` should be executed.
+To run **only** background-runner tests, Surefire should **include** the suite class, e.g. **`BGRTestSuiteRunner`**.
 
 ```xml
 <configuration>
-<!--    <excludes>-->
-<!--        <exclude>**/org/userway/selenium/runner/*.java</exclude>-->
-<!--    </excludes>-->
     <includes>
         <include>**/BGRTestSuiteRunner.java</include>
     </includes>
 </configuration>
 ```
 
-And then you can run Manual-mode tests only:
 ```shell
 mvn clean test
 ```
 
-NOTE: We use Logback as implementation of Slf4j in this sample project. 
-If you want to change log level for tests, you should update configuration
-in `src/test/resources/logback.xml` file.
+---
+
+Logging uses **Logback** for SLF4J; adjust levels in **`src/test/resources/logback.xml`**.

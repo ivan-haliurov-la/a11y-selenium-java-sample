@@ -14,11 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.11.0</junit.version>
         <junit.suite.version>1.11.0</junit.suite.version>
-        <userway.version>0.0.13</userway.version>
-        <selenium.version>4.18.1</selenium.version>
+        <selenium.version>4.14.1</selenium.version>
         <assertj.version>3.24.2</assertj.version>
         <logback.version>1.5.7</logback.version>
-        <lombok.version>1.18.30</lombok.version>
+        <lombok.version>1.18.38</lombok.version>
+        <jackson.version>2.15.2</jackson.version>
+        <commons-io.version>2.15.0</commons-io.version>
+        <slf4j.version>2.0.5</slf4j.version>
     </properties>
 
     <dependencies>
@@ -29,9 +31,35 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Vendored adapter JAR (no Maven repo); runtime deps listed explicitly below -->
+        <dependency>
             <groupId>org.userway</groupId>
             <artifactId>a11y-selenium-java</artifactId>
-            <version>${userway.version}</version>
+            <version>0.0.14</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/a11y-selenium-java-0.0.14.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -69,7 +97,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -77,18 +105,27 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>11</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <!-- Uncomment if you want to run manual sample tests -->
                     <excludes>
-                      <exclude>**/org/userway/selenium/runner/*.java</exclude>
+                        <exclude>**/org/userway/selenium/runner/*.java</exclude>
                     </excludes>
-
-                    <!-- Uncomment if you want to run Background Runner sample tests -->
-<!--                    <includes>-->
-<!--                        <include>**/BGRTestSuiteRunner.java</include>-->
-<!--                    </includes>-->
                 </configuration>
             </plugin>
         </plugins>

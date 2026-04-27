@@ -41,7 +41,7 @@ public class ManualScanTest {
     @Test
     @DisplayName("Should scan page and save Level CI scope report")
     void shouldScanPageAndSaveReport() {
-        driver.get("http://localhost:1342");
+        driver.get("https://www.w3.org/WAI/test-evaluate/preliminary/#images");
 
         var analysisConfig = AnalysisConfig.builder()
                 .reportPath(REPORTS_PATH)

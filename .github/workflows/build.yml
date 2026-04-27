@@ -26,10 +26,10 @@ jobs:
           cd ..
         env:
           CLOUDSMITH_TOKEN: ${{ secrets.CLOUDSMITH_TOKEN }}
-      - name: Install Java 11
+      - name: Install Java 17
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk
+          sudo apt-get install -y openjdk-17-jdk
           java -version
       - name: Install Maven
         run: |

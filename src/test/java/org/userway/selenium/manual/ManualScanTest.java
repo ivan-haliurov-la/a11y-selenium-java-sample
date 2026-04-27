@@ -5,11 +5,9 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.userway.selenium.AccessibilityAuditor;
-import org.userway.selenium.model.AnalysisStatus;
-import org.userway.selenium.model.config.AnalysisConfig;
-import org.userway.selenium.model.config.AuditConfig;
-import org.userway.selenium.model.report.AnalysisLevel;
+import org.levelci.selenium.AccessibilityAuditor;
+import org.levelci.selenium.model.config.AnalysisConfig;
+import org.levelci.selenium.model.config.AuditConfig;
 
 import java.io.File;
 
@@ -43,12 +41,9 @@ public class ManualScanTest {
     @Test
     @DisplayName("Should scan page and save Level CI scope report")
     void shouldScanPageAndSaveReport() {
-        driver.get("https://userway.org");
+        driver.get("http://localhost:1342");
 
         var analysisConfig = AnalysisConfig.builder()
-                .level(AnalysisLevel.AAA)
-                .includeBestPractices(true)
-                .includeExperimental(true)
                 .reportPath(REPORTS_PATH)
                 .build();
 
@@ -60,7 +55,8 @@ public class ManualScanTest {
 
         var result = AccessibilityAuditor.levelAnalyze(auditConfig);
 
-        assertThat(result.getStatus()).isEqualTo(AnalysisStatus.SUCCEEDED);
+        assertThat(result.getError()).isNull();
+        assertThat(result.getReport()).isNotNull();
         assertThat(result.getIssuesFound()).isGreaterThanOrEqualTo(0);
 
         var scopeReports = new File(REPORTS_PATH, "scope-reports");

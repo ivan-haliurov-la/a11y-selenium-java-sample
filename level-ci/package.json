@@ -6,7 +6,7 @@
   "author": "LevelCI DevTools",
   "license": "ISC",
   "devDependencies": {
-    "@level-ci/cli": "^0.1.15",
+    "@level-ci/cli": "^0.1.16",
     "@types/node": "^22.7.5",
     "typescript": "^5.6.3"
   }

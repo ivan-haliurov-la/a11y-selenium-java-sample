@@ -4,12 +4,11 @@ import org.junit.platform.suite.api.AfterSuite;
 import org.junit.platform.suite.api.BeforeSuite;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
-import org.userway.selenium.model.config.AnalysisConfig;
-import org.userway.selenium.model.config.AuditConfig;
-import org.userway.selenium.model.config.Rule;
+import org.levelci.selenium.model.config.AnalysisConfig;
+import org.levelci.selenium.model.config.AuditConfig;
+import org.levelci.selenium.runner.LevelCiBackgroundRunner;
 
 import java.time.Duration;
-import java.util.Set;
 
 @Suite
 @SelectPackages("org.userway.selenium.runner")
@@ -17,14 +16,13 @@ public class BGRTestSuiteRunner {
 
     @BeforeSuite
     static void setup() {
-        var backgroundRunner = UserWayBackgroundRunner.getInstance();
+        var backgroundRunner = LevelCiBackgroundRunner.getInstance();
         backgroundRunner.setGlobalAuditConfig(
                 AuditConfig.builder()
                         .strict(false)
                         .auditTimeout(Duration.ofMinutes(20))
                         .analysisConfiguration(
                                 AnalysisConfig.builder()
-                                        .includeRules(Set.of(Rule.SELECT_NAME))
                                         .reportPath("./level-ci/level-ci-reports")
                                         .build()
                         )
@@ -39,6 +37,6 @@ public class BGRTestSuiteRunner {
 
     @AfterSuite
     static void teardown() {
-        UserWayBackgroundRunner.getInstance().disableBackgroundRunner();
+        LevelCiBackgroundRunner.getInstance().disableBackgroundRunner();
     }
 }

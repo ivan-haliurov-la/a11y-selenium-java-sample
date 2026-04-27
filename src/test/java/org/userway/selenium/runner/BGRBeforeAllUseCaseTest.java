@@ -3,6 +3,7 @@ package org.userway.selenium.runner;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.levelci.selenium.runner.LevelCiBackgroundRunner;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +26,7 @@ public class BGRBeforeAllUseCaseTest {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(10));
 
         // Get proxy instance
-        driver = UserWayBackgroundRunner.getInstance().watchDriver(driver, "BGRBeforeAllUseCase-shared-driver");
+        driver = LevelCiBackgroundRunner.getInstance().watchDriver(driver, "BGRBeforeAllUseCase-shared-driver");
     }
 
     @AfterAll

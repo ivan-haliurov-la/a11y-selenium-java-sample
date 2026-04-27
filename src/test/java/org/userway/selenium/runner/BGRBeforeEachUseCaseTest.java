@@ -3,6 +3,7 @@ package org.userway.selenium.runner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.levelci.selenium.runner.LevelCiBackgroundRunner;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,7 +26,7 @@ public class BGRBeforeEachUseCaseTest {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(10));
 
         // Get proxy instance
-        driver = UserWayBackgroundRunner.getInstance()
+        driver = LevelCiBackgroundRunner.getInstance()
                 .watchDriver(driver, "BGRBeforeEachUseCaseTest-test_" + (testNumber++) + "-driver");
     }
 

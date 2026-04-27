@@ -1,6 +1,7 @@
 package org.userway.selenium.runner;
 
 import org.junit.jupiter.api.Test;
+import org.levelci.selenium.runner.LevelCiBackgroundRunner;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,7 +15,7 @@ public class BGRInlineUseCaseTest {
         WebDriver driver = new ChromeDriver(
                 new ChromeOptions().addArguments("--headless")
         );
-        driver = UserWayBackgroundRunner.getInstance()
+        driver = LevelCiBackgroundRunner.getInstance()
                 .watchDriver(driver, "BGRInlineUseCase-test_1");
         driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(10));
         // Each will be ignored
@@ -27,7 +28,7 @@ public class BGRInlineUseCaseTest {
         WebDriver driver = new ChromeDriver(
                 new ChromeOptions().addArguments("--headless")
         );
-        driver = UserWayBackgroundRunner.getInstance()
+        driver = LevelCiBackgroundRunner.getInstance()
                 .watchDriver(driver, "BGRInlineUseCase-test_1");
         driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(10));
 
@@ -41,7 +42,7 @@ public class BGRInlineUseCaseTest {
                 new ChromeOptions().addArguments("--headless")
         );
         driver.manage().timeouts().pageLoadTimeout(Duration.ofMinutes(10));
-        driver = UserWayBackgroundRunner.getInstance()
+        driver = LevelCiBackgroundRunner.getInstance()
                 .watchDriver(driver, "BGRInlineUseCase-test_1");
 
         driver.get("https://userway.org/university/");

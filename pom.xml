@@ -36,13 +36,11 @@
             <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Vendored adapter JAR (no Maven repo); runtime deps listed explicitly below -->
         <dependency>
-            <groupId>org.userway</groupId>
+            <groupId>org.levelci</groupId>
             <artifactId>a11y-selenium-java</artifactId>
-            <version>0.0.15</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/a11y-selenium-java-0.0.15.jar</systemPath>
+            <version>0.2.2-alpha-20260427124345</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -100,6 +98,21 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>my-local-test-internal</id>
+            <url>https://dl.cloudsmith.io/${env.MY_CLOUDSMITH_TOKEN}/my-local-test/internal/maven/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

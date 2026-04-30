@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.levelci.selenium.AccessibilityAuditor;
 import org.levelci.selenium.model.config.AnalysisConfig;
 import org.levelci.selenium.model.config.AuditConfig;
+import org.userway.selenium.levelci.LevelSetup;
 
 import java.io.File;
 
@@ -16,8 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ManualScanTest {
 
     private static WebDriver driver;
-
-    private static final String REPORTS_PATH = "." + File.separator + "level-ci" + File.separator + "level-ci-reports";
 
     @BeforeAll
     public static void setup() {
@@ -44,7 +43,7 @@ public class ManualScanTest {
         driver.get("https://www.w3.org/WAI/test-evaluate/preliminary/#images");
 
         var analysisConfig = AnalysisConfig.builder()
-                .reportPath(REPORTS_PATH)
+                .reportPath(LevelSetup.REPORTS_PATH)
                 .build();
 
         var auditConfig = AuditConfig.builder()

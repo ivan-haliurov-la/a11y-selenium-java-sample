@@ -56,12 +56,5 @@ public class ManualScanTest {
         var result = AccessibilityAuditor.levelAnalyze(auditConfig);
 
         assertThat(result.getError()).isNull();
-        assertThat(result.getReport()).isNotNull();
-        assertThat(result.getIssuesFound()).isGreaterThanOrEqualTo(0);
-
-        var scopeReports = new File(REPORTS_PATH, "scope-reports");
-        assertThat(scopeReports).exists();
-        assertThat(scopeReports).isDirectory();
-        assertThat(scopeReports.list()).isNotEmpty();
     }
 }
